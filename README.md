@@ -3,12 +3,12 @@
 
 ## 使用方法
 
-###默认从下往上移动展示
+### 默认从下往上移动展示
 
     FirstViewController *firstVC = [[FirstViewController alloc] init];
     [firstVC yto_presentInViewController:self];  
     
-###从某一点开始展示，然后逐渐变大
+### 从某一点开始展示，然后逐渐变大
     self.firstVC = [[FirstViewController alloc] init];
     [self.firstVC yto_presentInViewController:self fromPoint:CGPointMake(0,sender.frame.origin.y+CGRectGetHeight(sender.bounds))];
 
