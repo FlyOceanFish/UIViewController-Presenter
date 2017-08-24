@@ -1,7 +1,7 @@
 //
 //  UIViewController+Presenter.h
 //
-//  Created by FlyOceanFish on 2016/6/23.
+//  Created by FlyOceanFish on 2017/8/17.
 //  Copyright © 2017年 FlyOceanFish. All rights reserved.
 //
 
@@ -9,5 +9,7 @@
 
 @interface UIViewController (Presenter)
 - (void)yto_presentInViewController:(UIViewController *)parent;
+- (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point;
+
 - (void)yto_dismissViewController;
 @end
