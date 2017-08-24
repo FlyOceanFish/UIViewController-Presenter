@@ -19,6 +19,6 @@ self.firstVC = [[FirstViewController alloc] init];
 
 ## 效果图
 
-![效果图.png](http://upload-images.jianshu.io/upload_images/6644906-d6154d1798dee1f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) ![xiaoguo.gif](http://upload-images.jianshu.io/upload_images/6644906-b0f7b563cb4de0d9.gif?imageMogr2/auto-orient/strip)
+![xiaoguo.gif](http://upload-images.jianshu.io/upload_images/6644906-b0f7b563cb4de0d9.gif?imageMogr2/auto-orient/strip)
 
 
