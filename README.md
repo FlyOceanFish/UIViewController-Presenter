@@ -5,8 +5,8 @@
 
 ### 默认从下往上移动展示
 
-    FirstViewController *firstVC = [[FirstViewController alloc] init];
-    [firstVC yto_presentInViewController:self];  
+   FirstViewController *firstVC = [[FirstViewController alloc] init];
+   [firstVC yto_presentInViewController:self];  
     
 ### 从某一点开始展示，然后逐渐变大
     self.firstVC = [[FirstViewController alloc] init];
