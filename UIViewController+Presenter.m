@@ -15,11 +15,18 @@ typedef NS_ENUM(NSUInteger, YTOPresentAnimalDirection) {
 
 NSTimeInterval const AnimalTime = 0.35;
 
-static char const*backgroundViewKey = "BackgroundViewKey";
-static char const*animalDirectionViewKey = "animalDirectionKey";
+static char const *backgroundViewKey = "BackgroundViewKey";
+static char const *animalDirectionViewKey = "animalDirectionKey";
+static char const *visibleKey = "visibleKey";
 
 @implementation UIViewController (Presenter)
-
+-(void)setVisible:(BOOL)visible{
+    objc_setAssociatedObject(self, visibleKey, [NSNumber numberWithBool:visible], OBJC_ASSOCIATION_ASSIGN);
+}
+-(BOOL)isVisible{
+    NSNumber *number = objc_getAssociatedObject(self, visibleKey);
+    return number.boolValue;
+}
 - (UIView *)backgroundView{
     return objc_getAssociatedObject(self, backgroundViewKey);
 }
@@ -55,46 +62,57 @@ static char const*animalDirectionViewKey = "animalDirectionKey";
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.transform = CGAffineTransformMakeTranslation(point.x, -CGRectGetHeight(self.view.bounds));
         } completion:^(BOOL finished) {
-            
+            [self setVisible:YES];
         }];
     }else{
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(self.view.bounds), originHeight);
         } completion:^(BOOL finished) {
-            
+            [self setVisible:YES];
         }];
     }
 
 }
-- (void)yto_dismissViewController{
-    if ([self animalDirection]==YTOPresentAnimalUp) {
-        [UIView animateWithDuration:AnimalTime animations:^{
-            self.view.transform = CGAffineTransformIdentity;
-            [self backgroundView].alpha = 0;
-        } completion:^(BOOL finished) {
-            [self removeFromParentViewController];
-            [self.view removeFromSuperview];
-            [[self backgroundView] removeFromSuperview];
-        }];
+- (void)yto_dismissViewController:(BOOL)animal{
+    [self setVisible:NO];
+    if (animal) {
+        if ([self animalDirection]==YTOPresentAnimalUp) {
+            [UIView animateWithDuration:AnimalTime animations:^{
+                self.view.transform = CGAffineTransformIdentity;
+                [self backgroundView].alpha = 0;
+            } completion:^(BOOL finished) {
+                [self removeFromParentViewController];
+                [self.view removeFromSuperview];
+                [[self backgroundView] removeFromSuperview];
+            }];
+        }else{
+            [UIView animateWithDuration:AnimalTime animations:^{
+                self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(self.view.bounds), 0);
+                [self backgroundView].alpha = 0;
+            } completion:^(BOOL finished) {
+                [self removeFromParentViewController];
+                [self.view removeFromSuperview];
+                [[self backgroundView] removeFromSuperview];
+            }];
+        }
     }else{
-        [UIView animateWithDuration:AnimalTime animations:^{
-            self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(self.view.bounds), 0);
-            [self backgroundView].alpha = 0;
-        } completion:^(BOOL finished) {
-            [self removeFromParentViewController];
-            [self.view removeFromSuperview];
-            [[self backgroundView] removeFromSuperview];
-        }];
+        [self removeFromParentViewController];
+        [self.view removeFromSuperview];
+        [[self backgroundView] removeFromSuperview];
     }
-
 }
 - (void)privat_addBackgroudView:(UIView *)superView{
-    UIView *background = [[UIView alloc] initWithFrame:CGRectMake(self.view.origin.x, self.view.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
+    UIView *background = nil;
+    if ([self animalDirection]==YTOPresentAnimalUp) {
+        background = [[UIView alloc] initWithFrame:CGRectMake(superView.origin.x, superView.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
+    }else{
+        background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
+    }
     background.backgroundColor = [UIColor blackColor];
     background.alpha = 0.3;
     [superView insertSubview:background belowSubview:self.view];
     [self setBackGroundView:background];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(yto_dismissViewController)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(yto_dismissViewController:)];
     [background addGestureRecognizer:tap];
     
 }

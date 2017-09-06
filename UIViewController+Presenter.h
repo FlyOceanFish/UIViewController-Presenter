@@ -8,8 +8,11 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (Presenter)
+
+@property(nonatomic,assign,readonly,getter=isVisible)BOOL visible;
+
 - (void)yto_presentInViewController:(UIViewController *)parent;
 - (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point;
+- (void)yto_dismissViewController:(BOOL)animal;
 
-- (void)yto_dismissViewController;
 @end
