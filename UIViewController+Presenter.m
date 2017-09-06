@@ -106,7 +106,7 @@ static char const *visibleKey = "visibleKey";
     if ([self animalDirection]==YTOPresentAnimalUp) {
         background = [[UIView alloc] initWithFrame:CGRectMake(superView.origin.x, superView.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
     }else{
-        background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
+       background = [[UIView alloc] initWithFrame:CGRectMake(self.view.origin.x, self.view.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
     }
     background.backgroundColor = [UIColor blackColor];
     background.alpha = 0.3;
