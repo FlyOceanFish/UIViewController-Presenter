@@ -52,6 +52,7 @@ static char const *visibleKey = "visibleKey";
     [self privat_addBackgroudView:parent.view];
 }
 - (void)private_showFromPoint:(CGPoint)point direction:(YTOPresentAnimalDirection)direction parent:(UIViewController *)parent{
+    [self setVisible:YES];
     float originHeight = CGRectGetHeight(self.view.bounds);
     [parent addChildViewController:self];
     [parent.view addSubview:self.view];
@@ -62,13 +63,13 @@ static char const *visibleKey = "visibleKey";
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.transform = CGAffineTransformMakeTranslation(point.x, -CGRectGetHeight(self.view.bounds));
         } completion:^(BOOL finished) {
-            [self setVisible:YES];
+            
         }];
     }else{
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(self.view.bounds), originHeight);
         } completion:^(BOOL finished) {
-            [self setVisible:YES];
+//            [self setVisible:YES];
         }];
     }
 
@@ -106,14 +107,14 @@ static char const *visibleKey = "visibleKey";
     if ([self animalDirection]==YTOPresentAnimalUp) {
         background = [[UIView alloc] initWithFrame:CGRectMake(superView.origin.x, superView.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
     }else{
-       background = [[UIView alloc] initWithFrame:CGRectMake(self.view.origin.x, self.view.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
+        background = [[UIView alloc] initWithFrame:CGRectMake(self.view.origin.x, self.view.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
     }
     background.backgroundColor = [UIColor blackColor];
     background.alpha = 0.3;
     [superView insertSubview:background belowSubview:self.view];
     [self setBackGroundView:background];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(yto_dismissViewController:)];
-    [background addGestureRecognizer:tap];
+    [background performSelector:@selector(addGestureRecognizer:) withObject:tap afterDelay:0.2];
     
 }
 @end
