@@ -105,9 +105,9 @@ static char const *visibleKey = "visibleKey";
 - (void)privat_addBackgroudView:(UIView *)superView{
     UIView *background = nil;
     if ([self animalDirection]==YTOPresentAnimalUp) {
-        background = [[UIView alloc] initWithFrame:CGRectMake(superView.origin.x, superView.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
+        background = [[UIView alloc] initWithFrame:CGRectMake(superView.frame.origin.x, superView.frame.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
     }else{
-        background = [[UIView alloc] initWithFrame:CGRectMake(self.view.origin.x, self.view.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.origin.y)];
+        background = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.frame.origin.y)];
     }
     background.backgroundColor = [UIColor blackColor];
     background.alpha = 0.3;
