@@ -71,7 +71,7 @@ static char const *kfullScreen = "fullScreen";
     [parent.view addSubview:self.view];
     [self didMoveToParentViewController:parent];
     self.view.clipsToBounds = YES;
-    self.view.frame = CGRectMake(point.x,point.y, CGRectGetWidth(parent.view.bounds), direction==YTOPresentAnimalUp?CGRectGetHeight(self.view.bounds):0);
+    self.view.frame = CGRectMake(point.x,point.y, CGRectGetWidth(parent.view.bounds)-2*point.x, direction==YTOPresentAnimalUp?CGRectGetHeight(self.view.bounds):0);
     if (direction==YTOPresentAnimalUp) {
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.transform = CGAffineTransformMakeTranslation(point.x, -CGRectGetHeight(self.view.bounds));
