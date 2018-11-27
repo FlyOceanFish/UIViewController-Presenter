@@ -15,30 +15,37 @@ typedef NS_ENUM(NSUInteger, YTOPresentAnimalDirection) {
 
 NSTimeInterval const AnimalTime = 0.35;
 
-static char const *backgroundViewKey = "BackgroundViewKey";
-static char const *animalDirectionViewKey = "animalDirectionKey";
-static char const *visibleKey = "visibleKey";
+static char const *kbackgroundViewKey = "BackgroundViewKey";
+static char const *kanimalDirectionViewKey = "animalDirectionKey";
+static char const *kvisibleKey = "visibleKey";
+static char const *kfullScreen = "fullScreen";
 
 @implementation UIViewController (Presenter)
 -(void)setVisible:(BOOL)visible{
-    objc_setAssociatedObject(self, visibleKey, [NSNumber numberWithBool:visible], OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, kvisibleKey, [NSNumber numberWithBool:visible], OBJC_ASSOCIATION_ASSIGN);
 }
 -(BOOL)isVisible{
-    NSNumber *number = objc_getAssociatedObject(self, visibleKey);
+    NSNumber *number = objc_getAssociatedObject(self, kvisibleKey);
     return number.boolValue;
 }
 - (UIView *)backgroundView{
-    return objc_getAssociatedObject(self, backgroundViewKey);
+    return objc_getAssociatedObject(self, kbackgroundViewKey);
 }
 - (void)setBackGroundView:(UIView *)view{
-    objc_setAssociatedObject(self, backgroundViewKey, view, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, kbackgroundViewKey, view, OBJC_ASSOCIATION_RETAIN);
+}
+- (BOOL)fullScreen{
+    return [objc_getAssociatedObject(self, kfullScreen) boolValue];
+}
+- (void)setfullScreen:(BOOL)fullScreen{
+    objc_setAssociatedObject(self, kfullScreen, [NSNumber numberWithBool:fullScreen], OBJC_ASSOCIATION_ASSIGN);
 }
 - (YTOPresentAnimalDirection)animalDirection{
-    NSNumber *direction = objc_getAssociatedObject(self, animalDirectionViewKey);
+    NSNumber *direction = objc_getAssociatedObject(self, kanimalDirectionViewKey);
     return direction.intValue;
 }
 - (void)setanimalDirection:(YTOPresentAnimalDirection)direction{
-    objc_setAssociatedObject(self, animalDirectionViewKey, @(direction), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, kanimalDirectionViewKey, @(direction), OBJC_ASSOCIATION_ASSIGN);
 }
 - (void)yto_presentInViewController:(UIViewController *)parent{
     [self setanimalDirection:YTOPresentAnimalUp];
@@ -47,6 +54,12 @@ static char const *visibleKey = "visibleKey";
     [self privat_addBackgroudView:parent.view];
 }
 - (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point{
+    [self setanimalDirection:YTOPresentAnimalDown];
+    [self private_showFromPoint:point direction:YTOPresentAnimalDown parent:parent];
+    [self privat_addBackgroudView:parent.view];
+}
+- (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point fullScreen:(BOOL)fullScreen{
+    [self setfullScreen:fullScreen];
     [self setanimalDirection:YTOPresentAnimalDown];
     [self private_showFromPoint:point direction:YTOPresentAnimalDown parent:parent];
     [self privat_addBackgroudView:parent.view];
@@ -104,8 +117,8 @@ static char const *visibleKey = "visibleKey";
 }
 - (void)privat_addBackgroudView:(UIView *)superView{
     UIView *background = nil;
-    if ([self animalDirection]==YTOPresentAnimalUp) {
-        background = [[UIView alloc] initWithFrame:CGRectMake(superView.frame.origin.x, superView.frame.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
+    if ([self animalDirection]==YTOPresentAnimalUp||[self fullScreen]) {
+        background = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame))];
     }else{
         background = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(superView.frame), CGRectGetHeight(superView.frame)-self.view.frame.origin.y)];
     }

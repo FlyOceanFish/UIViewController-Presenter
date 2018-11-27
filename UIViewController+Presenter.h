@@ -13,6 +13,7 @@
 
 - (void)yto_presentInViewController:(UIViewController *)parent;
 - (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point;
+- (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point fullScreen:(BOOL)fullScreen;
 - (void)yto_dismissViewController:(BOOL)animal;
 
 @end
