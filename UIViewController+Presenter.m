@@ -48,17 +48,26 @@ static char const *kfullScreen = "fullScreen";
     objc_setAssociatedObject(self, kanimalDirectionViewKey, @(direction), OBJC_ASSOCIATION_ASSIGN);
 }
 - (void)yto_presentInViewController:(UIViewController *)parent{
+    if ([self isVisible]) {
+        return;
+    }
     [self setanimalDirection:YTOPresentAnimalUp];
     float height = CGRectGetHeight(parent.view.bounds);
     [self private_showFromPoint:CGPointMake(self.view.frame.origin.x, height) direction:YTOPresentAnimalUp parent:parent];
     [self privat_addBackgroudView:parent.view];
 }
 - (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point{
+    if ([self isVisible]) {
+        return;
+    }
     [self setanimalDirection:YTOPresentAnimalDown];
     [self private_showFromPoint:point direction:YTOPresentAnimalDown parent:parent];
     [self privat_addBackgroudView:parent.view];
 }
 - (void)yto_presentInViewController:(UIViewController *)parent fromPoint:(CGPoint)point fullScreen:(BOOL)fullScreen{
+    if ([self isVisible]) {
+        return;
+    }
     [self setfullScreen:fullScreen];
     [self setanimalDirection:YTOPresentAnimalDown];
     [self private_showFromPoint:point direction:YTOPresentAnimalDown parent:parent];
@@ -82,7 +91,6 @@ static char const *kfullScreen = "fullScreen";
         [UIView animateWithDuration:AnimalTime animations:^{
             self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, CGRectGetWidth(self.view.bounds), originHeight);
         } completion:^(BOOL finished) {
-//            [self setVisible:YES];
         }];
     }
 
@@ -126,8 +134,11 @@ static char const *kfullScreen = "fullScreen";
     background.alpha = 0.3;
     [superView insertSubview:background belowSubview:self.view];
     [self setBackGroundView:background];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(yto_dismissViewController:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissViewController)];
     [background performSelector:@selector(addGestureRecognizer:) withObject:tap afterDelay:0.2];
     
+}
+- (void)_dismissViewController{
+    [self yto_dismissViewController:NO];
 }
 @end
